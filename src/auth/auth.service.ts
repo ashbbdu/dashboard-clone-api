@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { AuthRepository } from './auth.repository';
 
 @Injectable()
 export class AuthService {
-  constructor () {};
+  constructor (private readonly authRepo : AuthRepository) {};
   findRates () {
-        return {
-            message : "hello how are you ?"
-        }
+        return this.authRepo.findRates();
     }
 }
