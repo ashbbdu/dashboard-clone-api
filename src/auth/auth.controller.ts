@@ -15,4 +15,9 @@ export class AuthController {
     register (@Body() data : any) {
         return this.authService.register(data);
     }
+
+    @Post("login")
+    login (data : any) {
+    const user = this.authService.login(data);
+  }
 }

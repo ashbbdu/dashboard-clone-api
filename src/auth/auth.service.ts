@@ -11,4 +11,7 @@ export class AuthService {
         console.log(data)
         return this.authRepo.register(data);
     }
+     login (data : any) {
+        return this.authRepo.login(data);
+    }
 }
