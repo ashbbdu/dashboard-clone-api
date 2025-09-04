@@ -8,6 +8,7 @@ export class AuthService {
         return this.authRepo.findRates();
     }
     register (data : any) {
+        console.log(data)
         return this.authRepo.register(data);
     }
 }
