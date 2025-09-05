@@ -40,22 +40,23 @@ export class AuthRepository {
     };
   }
 
-  async login(data: any) {
-    console.log("data" , data);
-    
+  async login(data: any) {    
     const user = await this.authModel.findOne({ where: { email: data.email }, raw : true });
-    console.log(typeof user?.password , "user");
-    
+    console.log(user?.password , typeof user?.password)
+     console.log(data?.password , typeof data?.password)
+
+    if (!user) {
+    throw new UnauthorizedException({ message: "User not found !" });
+  }
     if (user?.password !== data.password) {
-      throw new UnauthorizedException({
-        message : "hii"
-      });
+      throw new UnauthorizedException({message : "Invalid Password !"});
     }
-     const payload = { data };
-     const token = this.jwtService.signAsync(payload)
+     const payload = {id : user.id , firstNamme : user.firstName , lastName : user.lastName , email : user.email , user_code : user.user_code};
+     const token = await this.jwtService.signAsync(payload)
         return {
             message : "Logged in successfully !",
-            ...user , token
+            ...user , 
+            token
         };
   }
 }

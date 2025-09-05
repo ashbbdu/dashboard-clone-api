@@ -18,6 +18,6 @@ export class AuthController {
 
     @Post("login")
     login (@Body() data : any) {
-    const user = this.authService.login(data);
+    return this.authService.login(data);
   }
 }
