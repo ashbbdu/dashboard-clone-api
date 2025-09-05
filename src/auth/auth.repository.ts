@@ -1,12 +1,19 @@
-import { ConflictException, ForbiddenException, HttpException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { User } from './auth.model';
 import { InjectModel } from '@nestjs/sequelize';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthRepository {
   constructor(
     @InjectModel(User)
     private readonly authModel: typeof User,
+     private jwtService: JwtService
   ) {}
 
   async findRates() {
@@ -17,29 +24,45 @@ export class AuthRepository {
 
   async register(data: any) {
     const existingUser = await this.authModel.findByPk(data.email);
-    if(existingUser) {
-        throw new ConflictException({
-            status : "404",
-            message : "User already exist !"
-        });
+    if (existingUser) {
+      throw new ConflictException({
+        status: '404',
+        message: 'User already exist !',
+      });
     }
     const user = await this.authModel.create(data);
-    if(!user) {
-        throw new InternalServerErrorException();
+    if (!user) {
+      throw new InternalServerErrorException();
     }
     return {
-        message : "User created successfully !",
-        user 
-    }
+      message: 'User created successfully !',
+      user,
+    };
   }
 
-
+  async login(data: any) {
+    console.log("data" , data);
+    
+    const user = await this.authModel.findOne({ where: { email: data.email }, raw : true });
+    console.log(typeof user?.password , "user");
+    
+    if (user?.password !== data.password) {
+      throw new UnauthorizedException({
+        message : "hii"
+      });
+    }
+     const payload = { data };
+     const token = this.jwtService.signAsync(payload)
+        return {
+            message : "Logged in successfully !",
+            ...user , token
+        };
+  }
 }
 
-
 //  throw new HttpException({
-    //   status: HttpStatus.FORBIDDEN,
-    //   error: 'This is a custom message',
+//   status: HttpStatus.FORBIDDEN,
+//   error: 'This is a custom message',
 //     }, HttpStatus.FORBIDDEN, {
 //       cause: error
 //     });

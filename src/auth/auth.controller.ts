@@ -17,7 +17,7 @@ export class AuthController {
     }
 
     @Post("login")
-    login (data : any) {
+    login (@Body() data : any) {
     const user = this.authService.login(data);
   }
 }
