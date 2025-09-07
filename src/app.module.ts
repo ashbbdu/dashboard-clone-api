@@ -7,6 +7,7 @@ import { AuthService } from './auth/auth.service';
 import { User } from './auth/auth.model';
 import { AuthModule } from './auth/auth.module';
 import { QuoteService } from './quote/quote.service';
+import { QuoteModule } from './quote/quote.module';
 
 
 @Module({
@@ -18,10 +19,10 @@ import { QuoteService } from './quote/quote.service';
       // username: process.env.USER_NAME,
       // password: process.env.DB_PASSWORD,
       // database: process.env.DB_NAME,
-       autoLoadModels : true,
+      autoLoadModels : true,
       synchronize : true,
       logging: console.log,
-       host: '127.0.0.1',
+      host: '127.0.0.1',
       port: 3306,
       username: 'root',
       password: 'ash@Compunnel09',
@@ -31,7 +32,8 @@ import { QuoteService } from './quote/quote.service';
       
     }),
     // module will come here
-    AuthModule
+    AuthModule,
+    QuoteModule
   ],
   controllers: [AppController],
   providers: [AppService, QuoteService]
