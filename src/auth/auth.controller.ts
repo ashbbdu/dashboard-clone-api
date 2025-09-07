@@ -10,6 +10,7 @@ export class AuthController {
   ) {}
     @Get("rates")
     findRates () {
+        // will change this later
         return this.authService.findRates();
     }
     @HttpCode(HttpStatus.CREATED)
