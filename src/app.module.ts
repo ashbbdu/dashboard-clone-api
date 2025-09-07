@@ -6,6 +6,7 @@ import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { User } from './auth/auth.model';
 import { AuthModule } from './auth/auth.module';
+import { QuoteService } from './quote/quote.service';
 
 
 @Module({
@@ -25,7 +26,7 @@ import { AuthModule } from './auth/auth.module';
       username: 'root',
       password: 'ash@Compunnel09',
       database: 'dashboard-clone',
-      models: [User],
+      models: [],
       
       
     }),
@@ -33,6 +34,6 @@ import { AuthModule } from './auth/auth.module';
     AuthModule
   ],
   controllers: [AppController],
-  providers: [AppService]
+  providers: [AppService, QuoteService]
 })
 export class AppModule {}
