@@ -8,6 +8,7 @@ import { User } from './auth/auth.model';
 import { AuthModule } from './auth/auth.module';
 import { QuoteService } from './quote/quote.service';
 import { QuoteModule } from './quote/quote.module';
+import { OrganisationModule } from './organisation/organisation.module';
 
 
 @Module({
@@ -33,7 +34,8 @@ import { QuoteModule } from './quote/quote.module';
     }),
     // module will come here
     AuthModule,
-    QuoteModule
+    QuoteModule,
+    OrganisationModule
   ],
   controllers: [AppController],
   providers: [AppService, QuoteService]
