@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { QuoteService } from './quote/quote.service';
 import { QuoteModule } from './quote/quote.module';
 import { OrganisationModule } from './organisation/organisation.module';
+import { ServicetypeModule } from './servicetype/servicetype.module';
 
 
 @Module({
@@ -35,7 +36,8 @@ import { OrganisationModule } from './organisation/organisation.module';
     // module will come here
     AuthModule,
     QuoteModule,
-    OrganisationModule
+    OrganisationModule,
+    ServicetypeModule
   ],
   controllers: [AppController],
   providers: [AppService, QuoteService]
