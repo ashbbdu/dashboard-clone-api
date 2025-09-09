@@ -8,21 +8,21 @@ import {
 } from 'sequelize-typescript';
 
 @Table({
-  tableName: 'organisations',
+  tableName: 'unloco',
 })
-export class Organisation extends Model {
+export class Unloco extends Model {
   @PrimaryKey
   @AutoIncrement
   @Column
   id: number;
-  
-  @NotNull
-  @Column
-  cargowise_code: string;
 
   @NotNull
   @Column
-  service_type: string;
+  code: string;
+
+  @NotNull
+  @Column
+  name: string;
 
   @Column({ defaultValue: true })
   isActive: boolean;

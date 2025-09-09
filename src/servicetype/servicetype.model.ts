@@ -1,10 +1,20 @@
 import { Model } from 'sequelize';
-import { Column, NotNull, Table } from 'sequelize-typescript';
+import {
+  AutoIncrement,
+  Column,
+  NotNull,
+  PrimaryKey,
+  Table,
+} from 'sequelize-typescript';
 
 @Table({
-   tableName : "service-types"
+  tableName: 'service-types',
 })
 export class ServiceTypes extends Model {
+  @PrimaryKey
+  @AutoIncrement
+  @Column
+  id: number;
   @NotNull
   @Column
   cargowise_code: string;

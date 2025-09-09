@@ -10,6 +10,7 @@ import { QuoteService } from './quote/quote.service';
 import { QuoteModule } from './quote/quote.module';
 import { OrganisationModule } from './organisation/organisation.module';
 import { ServicetypeModule } from './servicetype/servicetype.module';
+import { UnlocoModule } from './unloco/unloco.module';
 
 
 @Module({
@@ -37,7 +38,8 @@ import { ServicetypeModule } from './servicetype/servicetype.module';
     AuthModule,
     QuoteModule,
     OrganisationModule,
-    ServicetypeModule
+    ServicetypeModule,
+    UnlocoModule
   ],
   controllers: [AppController],
   providers: [AppService, QuoteService]
