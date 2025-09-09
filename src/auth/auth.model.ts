@@ -1,4 +1,4 @@
-import { Model, NotNull } from 'sequelize-typescript';
+import { HasMany, Model, NotNull } from 'sequelize-typescript';
 import {
   AutoIncrement,
   Column,
@@ -6,8 +6,9 @@ import {
   Table,
   Unique,
 } from 'sequelize-typescript';
+import { Quote } from 'src/quote/quote.model';
 
-@Table({ tableName: 'users' })
+@Table({ tableName: 'users' , timestamps : true })
 export class User extends Model<User> {
   @PrimaryKey
   @AutoIncrement
@@ -33,4 +34,7 @@ export class User extends Model<User> {
 
   @Column({ defaultValue: true })
   declare isActive: boolean;
+
+  @HasMany(() => Quote)
+  quote : Quote[];
 }

@@ -1,29 +1,42 @@
-import { Model } from 'sequelize';
+import { DataType, Model } from 'sequelize-typescript';
 import {
   AutoIncrement,
   Column,
+  HasMany,
   NotNull,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
+import { Quote } from 'src/quote/quote.model';
 
 @Table({
   tableName: 'organisations',
 })
-export class Organisation extends Model {
+export class Organisation extends Model<Organisation> {
   @PrimaryKey
   @AutoIncrement
   @Column
-  id: number;
-  
-  @NotNull
-  @Column
-  cargowise_code: string;
+  declare id: number;
 
-  @NotNull
-  @Column
-  service_type: string;
+
+  @Column({
+    type : DataType.TEXT,
+    allowNull : false
+  })
+  declare cargowise_code: string;
+
+
+  @Column({
+    type : DataType.TEXT,
+    allowNull : false
+  })
+  declare service_type: string;
 
   @Column({ defaultValue: true })
-  isActive: boolean;
+  declare isActive: boolean;
+
+//   Let us fetch the quotes associated with one organisation
+  @HasMany(() => Quote)
+  quotes: Quote[];
+
 }

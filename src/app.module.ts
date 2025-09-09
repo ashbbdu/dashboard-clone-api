@@ -11,6 +11,8 @@ import { QuoteModule } from './quote/quote.module';
 import { OrganisationModule } from './organisation/organisation.module';
 import { ServicetypeModule } from './servicetype/servicetype.module';
 import { UnlocoModule } from './unloco/unloco.module';
+import { Quote } from './quote/quote.model';
+import { Organisation } from './organisation/organsation.model';
 
 
 @Module({
@@ -30,7 +32,7 @@ import { UnlocoModule } from './unloco/unloco.module';
       username: 'root',
       password: 'ash@Compunnel09',
       database: 'dashboard-clone',
-      models: [],
+      models: [User , Quote , Organisation],
       
       
     }),
