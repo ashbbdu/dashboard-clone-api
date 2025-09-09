@@ -2,6 +2,7 @@ import { Model } from 'sequelize';
 import {
   AutoIncrement,
   Column,
+  DataType,
   NotNull,
   PrimaryKey,
   Table,
@@ -10,20 +11,24 @@ import {
 @Table({
   tableName: 'unloco',
 })
-export class Unloco extends Model {
+export class Unloco extends Model<Unloco> {
   @PrimaryKey
   @AutoIncrement
   @Column
-  id: number;
+  declare id: number;
 
-  @NotNull
-  @Column
-  code: string;
+  @Column({
+    type : DataType.STRING,
+    allowNull : false
+  })
+declare code: string;
 
-  @NotNull
-  @Column
-  name: string;
+  @Column({
+    type : DataType.STRING,
+    allowNull : false
+  })
+  declare name: string;
 
   @Column({ defaultValue: true })
-  isActive: boolean;
+  declare isActive: boolean;
 }

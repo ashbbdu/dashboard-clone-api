@@ -15,12 +15,11 @@ export class ServiceTypes extends Model {
   @AutoIncrement
   @Column
   id: number;
-  @NotNull
-  @Column
+
+  @Column({allowNull : false})
   cargowise_code: string;
 
-  @NotNull
-  @Column
+  @Column({allowNull : false})
   service_type: string;
 
   @Column({ defaultValue: true })
