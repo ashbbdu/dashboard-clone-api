@@ -1,4 +1,3 @@
-
 import {
   AutoIncrement,
   BelongsTo,
@@ -8,18 +7,19 @@ import {
   NotNull,
   PrimaryKey,
   Table,
-  Model
+  Model,
 } from 'sequelize-typescript';
 import { User } from 'src/auth/auth.model';
 import { Organisation } from 'src/organisation/organsation.model';
+import { ServiceTypes } from 'src/servicetype/servicetype.model';
+import { Unloco } from 'src/unloco/unloco.model';
 
-@Table({ tableName: 'quotes' , timestamps : true })
+@Table({ tableName: 'quotes', timestamps: true })
 export class Quote extends Model<Quote> {
-
   @PrimaryKey
   @AutoIncrement
-    @Column({
-    type : DataType.INTEGER
+  @Column({
+    type: DataType.INTEGER,
   })
   declare id: number;
 
@@ -51,5 +51,66 @@ export class Quote extends Model<Quote> {
   @BelongsTo(() => Organisation)
   declare organisation: Organisation;
 
-  
+  @ForeignKey(() => ServiceTypes)
+  @Column({ type: DataType.INTEGER, allowNull: false })
+  declare service_type_id: number;
+
+  @BelongsTo(() => ServiceTypes)
+  declare serviceType: ServiceTypes;
+
+  @ForeignKey(() => Unloco)
+  @Column({ type: DataType.INTEGER, allowNull: false })
+  declare origin_id: number;
+
+  @BelongsTo(() => Unloco)
+  declare origin: Unloco;
+
+  @ForeignKey(() => Unloco)
+  @Column({ type: DataType.INTEGER, allowNull: false })
+  declare destination_id: number;
+
+  @BelongsTo(() => Unloco)
+  declare destination: Unloco;
+
+  @Column({
+    type: DataType.ENUM,
+    values: ['Pending', 'Won', 'Lost'],
+  })
+  status: string;
+  @Column({
+    type: DataType.ENUM,
+    values: [
+      'Price',
+      'Service Unavailability',
+      'Lost Price High',
+      'Lost Transit Time',
+      'Lost Space / Carrier Schedule',
+      'Lost Scope Mismatch (Incoterm/Coverage)',
+      'Lost Credit Terms',
+      'Declined — No Buy Rate',
+      'Lost Compliance (Sanctions/HS/Docs)',
+      'Lost Carrier Preference',
+      'No Decision — Expired',
+      'Cancelled by Customer',
+      'Cancelled — Shipment Aborted',
+    ],
+  })
+  lost_reason: string;
+
+  @Column({
+    type: DataType.STRING,
+  })
+  remark: string;
+
+  @Column({
+    type: DataType.STRING,
+  })
+  notes: string;
+
+  @Column({
+    type : DataType.BOOLEAN,
+    allowNull : false,
+    defaultValue : true
+  })
+  isActive : boolean
 }

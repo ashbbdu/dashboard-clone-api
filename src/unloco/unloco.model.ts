@@ -1,4 +1,4 @@
-import { Model } from 'sequelize';
+
 import {
   AutoIncrement,
   Column,
@@ -6,6 +6,7 @@ import {
   NotNull,
   PrimaryKey,
   Table,
+  Model
 } from 'sequelize-typescript';
 
 @Table({

@@ -1,27 +1,31 @@
-import { Model } from 'sequelize';
 import {
   AutoIncrement,
   Column,
-  NotNull,
   PrimaryKey,
   Table,
+  Model,
+  HasMany
 } from 'sequelize-typescript';
+import { Quote } from 'src/quote/quote.model';
 
 @Table({
   tableName: 'service-types',
 })
-export class ServiceTypes extends Model {
+export class ServiceTypes extends Model<ServiceTypes> {
   @PrimaryKey
   @AutoIncrement
   @Column
-  id: number;
+  declare id: number;
 
   @Column({allowNull : false})
-  cargowise_code: string;
+  declare cargowise_code: string;
 
   @Column({allowNull : false})
-  service_type: string;
+  declare service_type: string;
 
   @Column({ defaultValue: true })
-  isActive: boolean;
+  declare isActive: boolean;
+
+  @HasMany(() => Quote)
+  declare quote : Quote[]
 }
