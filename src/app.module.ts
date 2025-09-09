@@ -46,6 +46,6 @@ import { ServiceTypes } from './servicetype/servicetype.model';
     UnlocoModule
   ],
   controllers: [AppController],
-  providers: [AppService, QuoteService]
+  providers: [AppService , AuthService, QuoteService]
 })
 export class AppModule {}

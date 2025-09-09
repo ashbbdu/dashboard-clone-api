@@ -14,6 +14,7 @@ import { JwtModule } from '@nestjs/jwt';
       signOptions: { expiresIn: '3060s' },
     }),],
   controllers : [AuthController],
-  providers: [AuthService , AuthRepository]
+  providers: [AuthService , AuthRepository],
+  exports : [AuthService , AuthRepository] // since we are using this in appmodule providers then we have to export this
 })
 export class AuthModule {}

@@ -30,7 +30,7 @@ export class Organisation extends Model<Organisation> {
     type : DataType.TEXT,
     allowNull : false
   })
-  declare service_type: string;
+  declare name : string;
 
   @Column({ defaultValue: true })
   declare isActive: boolean;

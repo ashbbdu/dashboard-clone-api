@@ -1,9 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { QuoteRepository } from './quote.repository';
 
 @Injectable()
 export class QuoteService {
-    constructor () {}
+    constructor (private readonly quoteRepository : QuoteRepository) {}
      list () {
-        return "quote list service";
+        return this.quoteRepository.list();
+    }
+
+    add (data : any) {
+        return this.quoteRepository.add(data);
     }
 }
