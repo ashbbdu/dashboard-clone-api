@@ -24,6 +24,12 @@ export class Quote extends Model<Quote> {
   declare id: number;
 
   @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  declare quote_number: string;
+
+  @Column({
     type: DataType.DATE,
     allowNull: false,
     defaultValue: DataType.NOW,
@@ -79,6 +85,7 @@ export class Quote extends Model<Quote> {
   status: string;
   @Column({
     type: DataType.ENUM,
+    allowNull : true,
     values: [
       'Price',
       'Service Unavailability',
@@ -108,9 +115,9 @@ export class Quote extends Model<Quote> {
   notes: string;
 
   @Column({
-    type : DataType.BOOLEAN,
-    allowNull : false,
-    defaultValue : true
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
   })
-  isActive : boolean
+  isActive: boolean;
 }
