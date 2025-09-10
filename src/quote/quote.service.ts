@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { QuoteRepository } from './quote.repository';
+import { CreateQuoteDTO } from './dto/create-quote.dto';
 
 @Injectable()
 export class QuoteService {
@@ -8,7 +9,7 @@ export class QuoteService {
         return this.quoteRepository.list();
     }
 
-    add (data : any) {
+    add (data : CreateQuoteDTO) {
         return this.quoteRepository.add(data);
     }
 }

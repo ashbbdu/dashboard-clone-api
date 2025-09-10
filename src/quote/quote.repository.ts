@@ -15,12 +15,16 @@ import { User } from 'src/auth/auth.model';
 import { ServiceTypes } from 'src/servicetype/servicetype.model';
 import { Unloco } from 'src/unloco/unloco.model';
 import { Organisation } from 'src/organisation/organsation.model';
+import { CreateQuoteDTO } from './dto/create-quote.dto';
 
 //  { model: User, as: "salesExecutive", attributes: ["id", "first_name", "last_name", "email", "user_code"] },
 //         { model: Organisation, as: "customerOrg", attributes: ["id", "name"] },
 //         { model: ServiceType, as: "serviceType", attributes: ["id", "service_type"] },
 //         { model: Unloco, as: "originPort", attributes: ["id", "code", "name", "country_name"] },
 //         { model: Unloco, as: "destinationPort", attributes: ["id", "code", "name", "country_name"] },
+
+
+
 
 @Injectable()
 export class QuoteRepository {
@@ -47,7 +51,7 @@ export class QuoteRepository {
     };
   }
 
-  async add(data: any) {
+  async add(data: CreateQuoteDTO) {
     const {
       quote_number,
       sales_executive_id,
@@ -62,7 +66,7 @@ export class QuoteRepository {
     } = data;
     try {
       const createQuote = await this.quoteModel.create({
-        quote_date: Date.now(),
+        quote_date : new Date() ,
         ...data,
       });
       return {

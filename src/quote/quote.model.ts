@@ -14,8 +14,23 @@ import { Organisation } from 'src/organisation/organsation.model';
 import { ServiceTypes } from 'src/servicetype/servicetype.model';
 import { Unloco } from 'src/unloco/unloco.model';
 
+interface QuoteCreationAttrs {
+  quote_number: string;
+  sales_executive_id: number;
+  organisation_id: number;
+  service_type_id: number;
+  origin_id: number;
+  destination_id: number;
+  status: string;
+  lost_reason?: string;
+  remark?: string;
+  notes?: string;
+  quote_date?: Date;  // optional since DB will auto-generate
+}
+
+
 @Table({ tableName: 'quotes', timestamps: true })
-export class Quote extends Model<Quote> {
+export class Quote extends Model<Quote , QuoteCreationAttrs> {
   @PrimaryKey
   @AutoIncrement
   @Column({
