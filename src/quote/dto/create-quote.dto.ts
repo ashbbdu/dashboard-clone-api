@@ -1,7 +1,8 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateQuoteDTO {  
   @IsString()
+  @IsNotEmpty({message : "Quote Number is required !"})
   quote_number: string;
 
   @IsNumber()

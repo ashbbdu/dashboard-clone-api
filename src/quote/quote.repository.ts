@@ -8,7 +8,7 @@
 //     }
 // }
 
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Quote } from './quote.model';
 import { User } from 'src/auth/auth.model';
@@ -16,15 +16,6 @@ import { ServiceTypes } from 'src/servicetype/servicetype.model';
 import { Unloco } from 'src/unloco/unloco.model';
 import { Organisation } from 'src/organisation/organsation.model';
 import { CreateQuoteDTO } from './dto/create-quote.dto';
-
-//  { model: User, as: "salesExecutive", attributes: ["id", "first_name", "last_name", "email", "user_code"] },
-//         { model: Organisation, as: "customerOrg", attributes: ["id", "name"] },
-//         { model: ServiceType, as: "serviceType", attributes: ["id", "service_type"] },
-//         { model: Unloco, as: "originPort", attributes: ["id", "code", "name", "country_name"] },
-//         { model: Unloco, as: "destinationPort", attributes: ["id", "code", "name", "country_name"] },
-
-
-
 
 @Injectable()
 export class QuoteRepository {
@@ -35,7 +26,15 @@ export class QuoteRepository {
 
   async list() {
     const quote = await this.quoteModel.findAll({
-      attributes : {exclude : ["sales_executive_id" , "organisation_id" , "service_type_id" , "origin_id" , "destination_id"]},
+      attributes: {
+        exclude: [
+          'sales_executive_id',
+          'organisation_id',
+          'service_type_id',
+          'origin_id',
+          'destination_id',
+        ],
+      },
       include: [
         { model: User },
         { model: ServiceTypes },
@@ -43,7 +42,6 @@ export class QuoteRepository {
         { model: Unloco, as: 'destination' },
         { model: Organisation },
       ],
-      
     });
     return {
       message: 'Quotes fetched successfully !',
@@ -51,30 +49,65 @@ export class QuoteRepository {
     };
   }
 
+//   async add(data: CreateQuoteDTO) {
+//     try {
+//       const existingQuote = await this.quoteModel.findOne({
+//         where: { quote_number: data.quote_number },
+//         raw: true,
+//       });
+//       if (existingQuote) {
+//         throw new ConflictException({
+//           status: '404',
+//           message: 'Quote already exist !',
+//         });
+//       }
+//       const createQuote = await this.quoteModel.create({
+//         quote_date: new Date(),
+//         ...data,
+//       });
+//       return {
+//         message: 'Quote Created Successfully !',
+//         data: createQuote,
+//       };
+//     } catch (e) {
+//       console.log(e);
+//       throw e;
+//     }
+//   }
+
   async add(data: CreateQuoteDTO) {
-    const {
-      quote_number,
-      sales_executive_id,
-      organisation_id,
-      service_type_id,
-      origin_id,
-      destination_id,
-      status,
-      lost_reason,
-      remark,
-      notes,
-    } = data;
-    try {
+
+      const existingQuote = await this.quoteModel.findOne({
+        where: { quote_number: data.quote_number },
+        raw: true,
+      });
+      if (existingQuote) {
+        throw new ConflictException({
+          status: '404',
+          message: 'Quote already exist !',
+        });
+      }
       const createQuote = await this.quoteModel.create({
-        quote_date : new Date() ,
+        quote_date: new Date(),
         ...data,
       });
       return {
         message: 'Quote Created Successfully !',
         data: createQuote,
       };
-    } catch (e) {
-      console.log(e);
-    }
+
   }
 }
+
+// const {
+//   quote_number,
+//   sales_executive_id,
+//   organisation_id,
+//   service_type_id,
+//   origin_id,
+//   destination_id,
+//   status,
+//   lost_reason,
+//   remark,
+//   notes,
+// } = data;
