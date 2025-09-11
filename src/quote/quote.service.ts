@@ -12,4 +12,9 @@ export class QuoteService {
     add (data : CreateQuoteDTO) {
         return this.quoteRepository.add(data);
     }
+
+
+    update (data : any) {
+        return this.quoteRepository.update(data);
+    }
 }

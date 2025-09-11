@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Request, UseGuards } from '@nestjs/common';
 import { QuoteService } from './quote.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { CreateQuoteDTO } from './dto/create-quote.dto';
@@ -17,5 +17,11 @@ export class QuoteController {
     add (@Body() data : CreateQuoteDTO , @Request() req ) {
         console.log(req.user , "user from add")
         return this.quoteService.add(data);
+    }
+
+    @Put("update")
+    update (@Body() data : any , @Request() req ) {
+        console.log(req.user , "user from add")
+        return this.quoteService.update(data);
     }
 }

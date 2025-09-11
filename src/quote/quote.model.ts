@@ -97,7 +97,7 @@ export class Quote extends Model<Quote , QuoteCreationAttrs> {
     type: DataType.ENUM,
     values: ['Pending', 'Won', 'Lost'],
   })
-  status: string;
+  declare status: string;
   @Column({
     type: DataType.ENUM,
     allowNull : true,
@@ -117,22 +117,22 @@ export class Quote extends Model<Quote , QuoteCreationAttrs> {
       'Cancelled — Shipment Aborted',
     ],
   })
-  lost_reason: string;
+  declare lost_reason: string;
 
   @Column({
     type: DataType.STRING,
   })
-  remark: string;
+  declare remark: string;
 
   @Column({
     type: DataType.STRING,
   })
-  notes: string;
+  declare notes: string;
 
   @Column({
     type: DataType.BOOLEAN,
     allowNull: false,
     defaultValue: true,
   })
-  isActive: boolean;
+  declare isActive: boolean;
 }
