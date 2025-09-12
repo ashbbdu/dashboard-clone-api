@@ -25,7 +25,7 @@ interface QuoteCreationAttrs {
   lost_reason?: string;
   remark?: string;
   notes?: string;
-  quote_date?: Date;  // optional since DB will auto-generate
+  quote_date?: Date;
 }
 
 

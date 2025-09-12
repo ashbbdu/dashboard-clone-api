@@ -1,4 +1,11 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import { OrganisationService } from './organisation.service';
 
 @Controller('organisation')
-export class OrganisationController {}
+export class OrganisationController {
+    constructor (private readonly organisationSerice : OrganisationService) {}
+    @Get("/list")
+    list () {
+        
+    }
+}

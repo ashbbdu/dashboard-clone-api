@@ -1,4 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class OrganisationService {}
+export class OrganisationService {
+    list () {
+        
+    }
+}
