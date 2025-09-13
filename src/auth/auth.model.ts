@@ -40,6 +40,9 @@ export class User extends Model<User> {
   @HasMany(() => Quote)
   quote : Quote[];
 
-  @HasMany (() => RolePermission)
-  user_role : RolePermission[]
+  @HasMany(() => UserRoles)
+  user_role : UserRoles[]
+
+//   @HasMany (() => RolePermission)
+//   user_role : RolePermission[]
 }

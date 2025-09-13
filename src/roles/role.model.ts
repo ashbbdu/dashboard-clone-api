@@ -6,6 +6,7 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
+import { Permissions } from 'src/permissions/permission.model';
 import { RolePermission } from 'src/role_permission/role_permission.model';
 
 @Table({
@@ -36,6 +37,7 @@ export class Role extends Model<Role> {
   // //   Let us fetch the quotes associated with one organisation
   //   @HasMany(() => Quote)
   //   quotes: Quote[];
+
   @BelongsToMany(() => Role, () => RolePermission)
   roles: Role[];
 }

@@ -26,6 +26,7 @@ import { RolePermissionModule } from './role_permission/role_permission.module';
 import { RolePermission } from './role_permission/role_permission.model';
 import { UserRolesService } from './user_roles/user_roles.service';
 import { UserRolesModule } from './user_roles/user_roles.module';
+import { UserRoles } from './user_roles/user_role.model';
 
 
 @Module({
@@ -45,7 +46,7 @@ import { UserRolesModule } from './user_roles/user_roles.module';
       username: 'root',
       password: 'ash@Compunnel09',
       database: 'dashboard-clone',
-      models: [User , Quote , Organisation , Unloco , ServiceTypes , Role , Permissions , RolePermission],
+      models: [User , Quote , Organisation , Unloco , ServiceTypes , UserRoles , Role , Permissions , RolePermission],
       
       
     }),
