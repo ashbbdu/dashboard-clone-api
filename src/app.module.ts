@@ -15,6 +15,9 @@ import { Quote } from './quote/quote.model';
 import { Organisation } from './organisation/organsation.model';
 import { Unloco } from './unloco/unloco.model';
 import { ServiceTypes } from './servicetype/servicetype.model';
+import { PermissionsController } from './permissions/permissions.controller';
+import { PermissionsService } from './permissions/permissions.service';
+import { PermissionsModule } from './permissions/permissions.module';
 
 
 @Module({
@@ -43,9 +46,10 @@ import { ServiceTypes } from './servicetype/servicetype.model';
     QuoteModule,
     OrganisationModule,
     ServicetypeModule,
-    UnlocoModule
+    UnlocoModule,
+    PermissionsModule
   ],
-  controllers: [AppController],
-  providers: [AppService , AuthService, QuoteService]
+  controllers: [AppController, PermissionsController],
+  providers: [AppService , AuthService, QuoteService, PermissionsService]
 })
 export class AppModule {}
