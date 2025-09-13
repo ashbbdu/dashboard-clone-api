@@ -38,6 +38,8 @@ export class Role extends Model<Role> {
   //   @HasMany(() => Quote)
   //   quotes: Quote[];
 
-  @BelongsToMany(() => Role, () => RolePermission)
-  roles: Role[];
+//   @BelongsToMany(() => Role, () => RolePermission)
+//   roles: Role[];
+@HasMany(() => RolePermission)
+  rolePermissions: RolePermission[];
 }

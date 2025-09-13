@@ -10,6 +10,8 @@ import { JwtService } from '@nestjs/jwt';
 import { UserRoles } from 'src/user_roles/user_role.model';
 import { Role } from 'src/roles/role.model';
 import { Quote } from 'src/quote/quote.model';
+import { RolePermission } from 'src/role_permission/role_permission.model';
+import { Permissions } from 'src/permissions/permission.model';
 
 @Injectable()
 export class AuthRepository {
@@ -89,19 +91,40 @@ export class AuthRepository {
 //   }
 
 async login(data: any) {
-  const user = await this.authModel.findOne({
-    where: { email: data.email },
-    include: [
-      { model: UserRoles, include: [{ model: Role }] },
-      { model: Quote },
-    ],
-  });
+const user = await this.authModel.findOne({
+  where: { email: data.email },
+  include: [
+    {
+      model: UserRoles,
+      include: [
+        {
+          model: Role,
+          include: [
+            {
+              model: RolePermission,
+              include: [
+               {model: Permissions }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      model: Quote
+    }
+  ],
+});
+console.log(user?.dataValues , "user");
 
   if (!user) {
     throw new UnauthorizedException({ message: "User not found!" });
   }
 
   const userData = user.get({ plain: true });
+ 
+  console.log(userData , "user data");
+  
 
   if (userData.password !== data.password) {
     throw new UnauthorizedException({ message: "Invalid Password!" });
@@ -109,6 +132,12 @@ async login(data: any) {
 
   // Extract roles
   const roles = (userData.user_role || []).map((r: any) => r.role.name);
+//   const permissions = (userData.user_role || []).map((r: any) => r.role.);
+
+const permissions = userData.user_role.flatMap((ur: any) =>
+  ur.role.rolePermissions.map((rp: any) => rp.permission.name)
+);
+
 
   // Count quotes
   const quoteCount = (userData.quote || []).length;
@@ -130,6 +159,7 @@ async login(data: any) {
     message: "Logged in successfully!",
     ...cleanUser,
     roles,
+    permissions,
     quoteCount,
     token,
   };
