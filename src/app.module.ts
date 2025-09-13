@@ -18,6 +18,8 @@ import { ServiceTypes } from './servicetype/servicetype.model';
 import { PermissionsController } from './permissions/permissions.controller';
 import { PermissionsService } from './permissions/permissions.service';
 import { PermissionsModule } from './permissions/permissions.module';
+import { RolesModule } from './roles/roles.module';
+import { Role } from './roles/role.model';
 
 
 @Module({
@@ -37,7 +39,7 @@ import { PermissionsModule } from './permissions/permissions.module';
       username: 'root',
       password: 'ash@Compunnel09',
       database: 'dashboard-clone',
-      models: [User , Quote , Organisation , Unloco , ServiceTypes],
+      models: [User , Quote , Organisation , Unloco , ServiceTypes , Role],
       
       
     }),
@@ -47,7 +49,8 @@ import { PermissionsModule } from './permissions/permissions.module';
     OrganisationModule,
     ServicetypeModule,
     UnlocoModule,
-    PermissionsModule
+    PermissionsModule,
+    RolesModule
   ],
   controllers: [AppController, PermissionsController],
   providers: [AppService , AuthService, QuoteService, PermissionsService]
