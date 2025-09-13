@@ -20,6 +20,10 @@ import { PermissionsService } from './permissions/permissions.service';
 import { PermissionsModule } from './permissions/permissions.module';
 import { RolesModule } from './roles/roles.module';
 import { Role } from './roles/role.model';
+import { Permissions } from './permissions/permission.model';
+import { RolePermissionService } from './role_permission/role_permission.service';
+import { RolePermissionModule } from './role_permission/role_permission.module';
+import { RolePermission } from './role_permission/role_permission.model';
 
 
 @Module({
@@ -39,7 +43,7 @@ import { Role } from './roles/role.model';
       username: 'root',
       password: 'ash@Compunnel09',
       database: 'dashboard-clone',
-      models: [User , Quote , Organisation , Unloco , ServiceTypes , Role],
+      models: [User , Quote , Organisation , Unloco , ServiceTypes , Role , Permissions , RolePermission],
       
       
     }),
@@ -50,9 +54,10 @@ import { Role } from './roles/role.model';
     ServicetypeModule,
     UnlocoModule,
     PermissionsModule,
-    RolesModule
+    RolesModule,
+    RolePermissionModule
   ],
   controllers: [AppController, PermissionsController],
-  providers: [AppService , AuthService, QuoteService, PermissionsService]
+  providers: [AppService , AuthService, QuoteService, PermissionsService, RolePermissionService]
 })
 export class AppModule {}

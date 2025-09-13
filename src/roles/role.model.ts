@@ -6,7 +6,6 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { Quote } from 'src/quote/quote.model';
 
 @Table({
   tableName: 'roles',
