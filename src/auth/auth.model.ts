@@ -7,6 +7,8 @@ import {
   Unique,
 } from 'sequelize-typescript';
 import { Quote } from 'src/quote/quote.model';
+import { RolePermission } from 'src/role_permission/role_permission.model';
+import { UserRoles } from 'src/user_roles/user_role.model';
 
 @Table({ tableName: 'users' , timestamps : true })
 export class User extends Model<User> {
@@ -37,4 +39,7 @@ export class User extends Model<User> {
 
   @HasMany(() => Quote)
   quote : Quote[];
+
+  @HasMany (() => RolePermission)
+  user_role : RolePermission[]
 }

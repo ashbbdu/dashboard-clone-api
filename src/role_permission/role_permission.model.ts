@@ -35,7 +35,7 @@ export class RolePermission extends Model<RolePermission> {
     type: DataType.INTEGER,
     allowNull: false,
   })
-  permission_id: number;
+  declare permission_id: number;
 
   @BelongsTo(() => Permissions)
   declare permission : Permissions

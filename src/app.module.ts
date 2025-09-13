@@ -25,6 +25,7 @@ import { RolePermissionService } from './role_permission/role_permission.service
 import { RolePermissionModule } from './role_permission/role_permission.module';
 import { RolePermission } from './role_permission/role_permission.model';
 import { UserRolesService } from './user_roles/user_roles.service';
+import { UserRolesModule } from './user_roles/user_roles.module';
 
 
 @Module({
@@ -56,7 +57,8 @@ import { UserRolesService } from './user_roles/user_roles.service';
     UnlocoModule,
     PermissionsModule,
     RolesModule,
-    RolePermissionModule
+    RolePermissionModule,
+    UserRolesModule
   ],
   controllers: [AppController, PermissionsController],
   providers: [AppService , AuthService, QuoteService, PermissionsService, RolePermissionService, UserRolesService]
