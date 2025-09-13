@@ -1,4 +1,4 @@
-import { DataType, Model } from 'sequelize-typescript';
+import { BelongsToMany, DataType, Model } from 'sequelize-typescript';
 import {
   AutoIncrement,
   Column,
@@ -6,10 +6,11 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
+import { RolePermission } from 'src/role_permission/role_permission.model';
 
 @Table({
   tableName: 'roles',
-  timestamps : true
+  timestamps: true,
 })
 export class Role extends Model<Role> {
   @PrimaryKey
@@ -17,25 +18,24 @@ export class Role extends Model<Role> {
   @Column
   declare id: number;
 
+  @Column({
+    type: DataType.TEXT,
+    allowNull: false,
+  })
+  declare name: string;
 
   @Column({
-    type : DataType.TEXT,
-    allowNull : false
+    type: DataType.TEXT,
+    allowNull: false,
   })
-  declare name : string;
-
-
-  @Column({
-    type : DataType.TEXT,
-    allowNull : false
-  })
-  declare description : string;
+  declare description: string;
 
   @Column({ defaultValue: true })
   declare isActive: boolean;
 
-// //   Let us fetch the quotes associated with one organisation
-//   @HasMany(() => Quote)
-//   quotes: Quote[];
-
+  // //   Let us fetch the quotes associated with one organisation
+  //   @HasMany(() => Quote)
+  //   quotes: Quote[];
+  @BelongsToMany(() => Role, () => RolePermission)
+  roles: Role[];
 }

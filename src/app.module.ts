@@ -24,6 +24,7 @@ import { Permissions } from './permissions/permission.model';
 import { RolePermissionService } from './role_permission/role_permission.service';
 import { RolePermissionModule } from './role_permission/role_permission.module';
 import { RolePermission } from './role_permission/role_permission.model';
+import { UserRolesService } from './user_roles/user_roles.service';
 
 
 @Module({
@@ -58,6 +59,6 @@ import { RolePermission } from './role_permission/role_permission.model';
     RolePermissionModule
   ],
   controllers: [AppController, PermissionsController],
-  providers: [AppService , AuthService, QuoteService, PermissionsService, RolePermissionService]
+  providers: [AppService , AuthService, QuoteService, PermissionsService, RolePermissionService, UserRolesService]
 })
 export class AppModule {}
