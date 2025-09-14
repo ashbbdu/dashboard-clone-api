@@ -18,6 +18,10 @@ export class AuthRepository {
   constructor(
     @InjectModel(User)
     private readonly authModel: typeof User,
+    @InjectModel(Permissions)
+    private readonly permissionModel: typeof Permissions,
+    @InjectModel(Role) private readonly rolenModel: typeof Role,
+    @InjectModel(UserRoles) private readonly usrRoleModel: typeof UserRoles,
     private jwtService: JwtService,
   ) {}
 
@@ -45,126 +49,119 @@ export class AuthRepository {
     };
   }
 
-//   async login(data: any) {
-//     const user = await this.authModel.findOne({
-//       where: { email: data.email  },
-//       include: [
-//         {
-//           model: UserRoles,
-//           include: [{ model: Role } ],
-        
-//         },
-//         {
-//           model: Quote,
-
-//         },
-//       ],
-//     });
-  
-//     const roles = user?.dataValues.user_role.map((r => r.role.name))
-    
-
-//       if (!user?.dataValues) {
-//     throw new UnauthorizedException({ message: "User not found!" });
-// }
-
-// if (user.dataValues.password !== data.password) {
-//     throw new UnauthorizedException({ message: "Invalid Password!" });
-// }
-// const payload = {
-//     id: user.dataValues.id,
-//     firstName: user.dataValues.firstName,
-//     lastName: user.dataValues.lastName,
-//     email: user.dataValues.email,
-//     user_code: user.dataValues.user_code
-// };
-// const quoteCount = user.dataValues.quote.length || 0;
-// const token = await this.jwtService.signAsync(payload);
-// const userDetails = {...user.get({plain : true}) , quote : quoteCount , user_role : undefined}
-
-// return {
-//     message: "Logged in successfully!",
-//     ...userDetails,
-//     roles,
-//     token
-// };
-//   }
-
-async login(data: any) {
-const user = await this.authModel.findOne({
-  where: { email: data.email },
-  include: [
-    {
-      model: UserRoles,
+  async login(data: any) {
+    const user = await this.authModel.findOne({
+      where: { email: data.email },
       include: [
         {
           model: Role,
+          through: { attributes: [] }, // hide UserRoles junction table
           include: [
             {
-              model: RolePermission,
-              include: [
-               {model: Permissions }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      model: Quote
+              model: Permissions,
+              through: { attributes: [] }, // hide RolePermissions junction table
+            },
+          ],
+        },
+        {
+          model: Quote,
+        },
+      ],
+    });
+
+    if (!user) {
+      throw new UnauthorizedException({ message: 'User not found!' });
     }
-  ],
-});
-console.log(user?.dataValues , "user");
 
-  if (!user) {
-    throw new UnauthorizedException({ message: "User not found!" });
+    const userData = user.get({ plain: true });
+
+    if (userData.password !== data.password) {
+      throw new UnauthorizedException({ message: 'Invalid Password!' });
+    }
+
+    // Extract roles
+    const roles = (userData.roles || []).map((r: any) => r.name);
+
+    // Extract permissions
+    const permissions = (userData.roles || []).flatMap((r: any) =>
+      (r.permissions || []).map((p: any) => p.name),
+    );
+
+    // Count quotes
+    const quoteCount = (userData.quote || []).length;
+
+    // Exclude unwanted fields
+    const { password, roles: _roles, quote, ...cleanUser } = userData;
+
+    const payload = {
+      id: cleanUser.id,
+      firstName: cleanUser.firstName,
+      lastName: cleanUser.lastName,
+      email: cleanUser.email,
+      user_code: cleanUser.user_code,
+    };
+
+    const token = await this.jwtService.signAsync(payload);
+
+    return {
+      message: 'Logged in successfully!',
+      name: cleanUser.firstName + cleanUser.lastName,
+      email: cleanUser.email,
+      roles,
+      permissions,
+      token,
+    };
   }
 
-  const userData = user.get({ plain: true });
- 
-  console.log(userData , "user data");
-  
+  async verifiyRole(req, chosenRole) {
+    console.log(chosenRole.choosenRole, 'choosen role');
 
-  if (userData.password !== data.password) {
-    throw new UnauthorizedException({ message: "Invalid Password!" });
+    const userId = req.user.id; // extracted from login token
+    const user = await this.authModel.findOne({
+      where: { id: userId },
+      include: [{ model: Role, through: { attributes: [] } }],
+    });
+
+    const roles = await this.usrRoleModel.findAll({
+      where: { user_id: userId },
+      include: { model: Role },
+      attributes: [],
+    });
+    const currentRole = await this.rolenModel.findByPk(chosenRole.choosenRole);
+
+    const activeRole = currentRole?.name;
+
+    if (!user) throw new UnauthorizedException('User not found');
+
+    const userRoles = roles.map((r) => r.role.name);
+    console.log(userRoles, 'usrroles');
+
+    if (!userRoles.includes(activeRole || '')) {
+      throw new UnauthorizedException({
+        message: 'Role not assigned to user !',
+        statusCode: 401,
+      });
+    }
+    const payload = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      user_code: user.user_code,
+      userRoles,
+      activeRole,
+    };
+    const finalUser = {...user.dataValues , roles : undefined , password : undefined}
+    const finalToken = this.jwtService.sign(payload, { expiresIn: '1h' });
+
+    return {
+      message: `Role assigned successfully.`,
+      user : finalUser,
+      activeRole,
+      userRoles,
+      token: finalToken,
+    };
   }
-
-  // Extract roles
-  const roles = (userData.user_role || []).map((r: any) => r.role.name);
-//   const permissions = (userData.user_role || []).map((r: any) => r.role.);
-
-const permissions = userData.user_role.flatMap((ur: any) =>
-  ur.role.rolePermissions.map((rp: any) => rp.permission.name)
-);
-
-
-  // Count quotes
-  const quoteCount = (userData.quote || []).length;
-
-  // Exclude unwanted fields using destructuring
-  const { password, user_role, quote, ...cleanUser } = userData;
-
-  const payload = {
-    id: cleanUser.id,
-    firstName: cleanUser.firstName,
-    lastName: cleanUser.lastName,
-    email: cleanUser.email,
-    user_code: cleanUser.user_code,
-  };
-
-  const token = await this.jwtService.signAsync(payload);
-
-  return {
-    message: "Logged in successfully!",
-    ...cleanUser,
-    roles,
-    permissions,
-    quoteCount,
-    token,
-  };
-}
-
 }
 
 //  throw new HttpException({

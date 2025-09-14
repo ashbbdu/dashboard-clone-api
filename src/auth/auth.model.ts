@@ -1,4 +1,4 @@
-import { HasMany, Model, NotNull } from 'sequelize-typescript';
+import { BelongsToMany, HasMany, Model, NotNull } from 'sequelize-typescript';
 import {
   AutoIncrement,
   Column,
@@ -8,6 +8,7 @@ import {
 } from 'sequelize-typescript';
 import { Quote } from 'src/quote/quote.model';
 import { RolePermission } from 'src/role_permission/role_permission.model';
+import { Role } from 'src/roles/role.model';
 import { UserRoles } from 'src/user_roles/user_role.model';
 
 @Table({ tableName: 'users' , timestamps : true })
@@ -40,8 +41,11 @@ export class User extends Model<User> {
   @HasMany(() => Quote)
   quote : Quote[];
 
-  @HasMany(() => UserRoles)
-  user_role : UserRoles[]
+//   @HasMany(() => UserRoles)
+//   user_role : UserRoles[]
+
+  @BelongsToMany(() => Role, () => UserRoles)
+  roles: Role[];
 
 //   @HasMany (() => RolePermission)
 //   user_role : RolePermission[]

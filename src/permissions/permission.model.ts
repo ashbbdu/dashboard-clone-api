@@ -8,6 +8,7 @@ import {
   BelongsToMany,
 } from 'sequelize-typescript';
 import { RolePermission } from 'src/role_permission/role_permission.model';
+import { Role } from 'src/roles/role.model';
 
 @Table({
   tableName: 'permissions',
@@ -34,6 +35,6 @@ export class Permissions extends Model<Permissions> {
   @Column({ defaultValue: true })
   declare isActive: boolean;
 
-  @BelongsToMany(() => Permissions, () => RolePermission)
-  permissions: Permissions[];
+  @BelongsToMany(() => Role, () => RolePermission)
+  roles: Role[];
 }

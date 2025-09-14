@@ -85,6 +85,7 @@ export class UserRoles extends Model<UserRoles> {
   })
   declare role_id: number;
 
-  @BelongsTo(() => Role, { as: 'role' })
+//   means user_roles belong karta hai Role ko
+  @BelongsTo(() => Role)
   declare role: Role;
 }

@@ -72,8 +72,8 @@ export class RolePermission extends Model<RolePermission> {
   })
   declare role_id: number;
 
-  @BelongsTo(() => Role)
-  declare role: Role;
+//   @BelongsTo(() => Role)
+//   declare role: Role;
 
   // FK to Permission
   @ForeignKey(() => Permissions)
@@ -83,6 +83,6 @@ export class RolePermission extends Model<RolePermission> {
   })
   declare permission_id: number;
 
-  @BelongsTo(() => Permissions)
-  declare permission: Permissions;
+//   @BelongsTo(() => Permissions)
+//   declare permission: Permissions;
 }

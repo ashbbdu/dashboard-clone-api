@@ -6,8 +6,11 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
+import { User } from 'src/auth/auth.model';
 import { Permissions } from 'src/permissions/permission.model';
 import { RolePermission } from 'src/role_permission/role_permission.model';
+import { RolePermissionService } from 'src/role_permission/role_permission.service';
+import { UserRoles } from 'src/user_roles/user_role.model';
 
 @Table({
   tableName: 'roles',
@@ -40,6 +43,11 @@ export class Role extends Model<Role> {
 
 //   @BelongsToMany(() => Role, () => RolePermission)
 //   roles: Role[];
-@HasMany(() => RolePermission)
-  rolePermissions: RolePermission[];
+// @HasMany(() => RolePermission)
+//   rolePermissions: RolePermission[];
+  @BelongsToMany(() => User, () => UserRoles)
+  users: User[];
+
+  @BelongsToMany(() => Permissions, () => RolePermission)
+  permissions: Permissions[];
 }

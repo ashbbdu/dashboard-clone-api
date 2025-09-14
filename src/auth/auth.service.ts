@@ -14,4 +14,9 @@ export class AuthService {
      login (data : any) {
         return this.authRepo.login(data);
     }
+
+    verifyRole (req , chosenRole : number) {
+        
+        return this.authRepo.verifiyRole(req , chosenRole);
+    }
 }
