@@ -83,6 +83,6 @@ export class RolePermission extends Model<RolePermission> {
   })
   declare permission_id: number;
 
-//   @BelongsTo(() => Permissions)
-//   declare permission: Permissions;
+  @BelongsTo(() => Permissions)
+  declare permission: Permissions;
 }

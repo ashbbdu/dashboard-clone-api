@@ -22,6 +22,7 @@ export class AuthRepository {
     private readonly permissionModel: typeof Permissions,
     @InjectModel(Role) private readonly rolenModel: typeof Role,
     @InjectModel(UserRoles) private readonly usrRoleModel: typeof UserRoles,
+    @InjectModel(RolePermission) private readonly rolePermissionModel: typeof RolePermission,
     private jwtService: JwtService,
   ) {}
 
@@ -129,6 +130,9 @@ export class AuthRepository {
     });
     const currentRole = await this.rolenModel.findByPk(chosenRole.choosenRole);
 
+    const permissions = await this.rolePermissionModel.findAll({where : {role_id : currentRole?.id} , include : {model : Permissions}})
+    const userPermissions = permissions.map(r => r.permission.name)
+
     const activeRole = currentRole?.name;
 
     if (!user) throw new UnauthorizedException('User not found');
@@ -150,6 +154,7 @@ export class AuthRepository {
       user_code: user.user_code,
       userRoles,
       activeRole,
+      permissions : userPermissions
     };
     const finalUser = {...user.dataValues , roles : undefined , password : undefined}
     const finalToken = this.jwtService.sign(payload, { expiresIn: '1h' });
@@ -159,6 +164,7 @@ export class AuthRepository {
       user : finalUser,
       activeRole,
       userRoles,
+      permissions : userPermissions,
       token: finalToken,
     };
   }

@@ -33,7 +33,7 @@ export class AuthController {
   }
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
-  @Post('verify-role')
+  @Post('assign-role')
   verifyRole(@Request() req, @Body() choosenRole: number) {
    return this.authService.verifyRole(req , choosenRole);
   }
